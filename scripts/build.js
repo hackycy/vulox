@@ -36,7 +36,7 @@ async function startBuild() {
         outDir: `dist/${lib.name}`,
         lib: {
           entry: lib.entry,
-          name: 'NnLoader',
+          name: 'UnwLoader',
           formats: ['es', 'umd', 'iife'],
           fileName: (format) => {
             if (format === 'es') {

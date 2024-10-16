@@ -1,0 +1,48 @@
+{
+  "name": "unw-loader",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./dist/babel/unw-loader.d.ts",
+      "import": "./dist/babel/unw-loader.js",
+      "require": "./dist/babel/unw-loader.umd.cjs"
+    },
+    "./sucrase": {
+      "types": "./dist/sucrase/unw-loader.d.ts",
+      "import": "./dist/sucrase/unw-loader.js",
+      "require": "./dist/sucrase/unw-loader.umd.cjs"
+    }
+  },
+  "main": "./dist/babel/unw-loader.umd.cjs",
+  "module": "./dist/babel/unw-loader.js",
+  "types": "./dist/babel/unw-loader.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && node scripts/build.js"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.27.3",
+    "@babel/core": "^7.25.8",
+    "@babel/parser": "^7.25.8",
+    "@babel/plugin-transform-modules-commonjs": "^7.25.7",
+    "@babel/plugin-transform-typescript": "^7.25.7",
+    "@types/babel__core": "^7.20.5",
+    "@types/hash-sum": "^1.0.2",
+    "@types/node": "^22.7.5",
+    "@vue/babel-plugin-jsx": "^1.2.5",
+    "@vue/compiler-sfc": "^3.5.12",
+    "eslint": "^9.12.0",
+    "hash-sum": "^2.0.0",
+    "sucrase": "^3.35.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8",
+    "vite-plugin-dts": "^4.2.4",
+    "vite-plugin-node-polyfills": "^0.22.0",
+    "vue": "^3.5.12"
+  }
+}

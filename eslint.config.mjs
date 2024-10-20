@@ -7,6 +7,7 @@ export default antfu(
       quotes: 'single'
     },
     typescript: true,
+    regexp: false,
     rules: {
       'no-console': 'off',
       'style/quote-props': ['error', 'as-needed'],

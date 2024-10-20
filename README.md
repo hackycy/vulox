@@ -1,6 +1,6 @@
-# unw-loader
+# vulox
 
-unw-loader (Unified Web Loader)
+vulox (Vue Loader X)
 
 # Thanks
 

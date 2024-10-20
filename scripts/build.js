@@ -8,11 +8,11 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const libMap = [
   {
-    entry: resolve(__dirname, '../lib/unw-loader.babel.ts'),
+    entry: resolve(__dirname, '../lib/vulox.babel.ts'),
     name: 'babel'
   },
   {
-    entry: resolve(__dirname, '../lib/unw-loader.sucrase.ts'),
+    entry: resolve(__dirname, '../lib/vulox.sucrase.ts'),
     name: 'sucrase'
   }
 ]
@@ -36,17 +36,17 @@ async function startBuild() {
         outDir: `dist/${lib.name}`,
         lib: {
           entry: lib.entry,
-          name: 'UnwLoader',
+          name: 'Vulox',
           formats: ['es', 'umd', 'iife'],
           fileName: (format) => {
             if (format === 'es') {
-              return 'unw-loader.js'
+              return 'vulox.js'
             } else if (format === 'umd') {
-              return 'unw-loader.umd.cjs'
+              return 'vulox.umd.cjs'
             } else if (format === 'iife') {
-              return 'unw-loader.global.js'
+              return 'vulox.global.js'
             } else {
-              return `unw-loader.${format}.js`
+              return `vulox.${format}.js`
             }
           }
         }

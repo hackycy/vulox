@@ -1,23 +1,22 @@
 {
-  "name": "unw-loader",
+  "name": "vulox",
   "type": "module",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
   "exports": {
     ".": {
-      "types": "./dist/babel/unw-loader.d.ts",
-      "import": "./dist/babel/unw-loader.js",
-      "require": "./dist/babel/unw-loader.umd.cjs"
+      "types": "./dist/babel/vulox.d.ts",
+      "import": "./dist/babel/vulox.js",
+      "require": "./dist/babel/vulox.umd.cjs"
     },
     "./sucrase": {
-      "types": "./dist/sucrase/unw-loader.d.ts",
-      "import": "./dist/sucrase/unw-loader.js",
-      "require": "./dist/sucrase/unw-loader.umd.cjs"
+      "types": "./dist/sucrase/vulox.d.ts",
+      "import": "./dist/sucrase/vulox.js",
+      "require": "./dist/sucrase/vulox.umd.cjs"
     }
   },
-  "main": "./dist/babel/unw-loader.umd.cjs",
-  "module": "./dist/babel/unw-loader.js",
-  "types": "./dist/babel/unw-loader.d.ts",
+  "main": "./dist/babel/vulox.umd.cjs",
+  "module": "./dist/babel/vulox.js",
+  "types": "./dist/babel/vulox.d.ts",
   "files": [
     "dist"
   ],
@@ -33,14 +32,14 @@
     "@babel/plugin-transform-typescript": "^7.25.7",
     "@types/babel__core": "^7.20.5",
     "@types/hash-sum": "^1.0.2",
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.7",
     "@vue/babel-plugin-jsx": "^1.2.5",
     "@vue/compiler-sfc": "^3.5.12",
-    "eslint": "^9.12.0",
+    "eslint": "^9.13.0",
     "hash-sum": "^2.0.0",
     "sucrase": "^3.35.0",
     "typescript": "^5.6.3",
-    "vite": "^5.4.8",
+    "vite": "^5.4.9",
     "vite-plugin-dts": "^4.2.4",
     "vite-plugin-node-polyfills": "^0.22.0",
     "vue": "^3.5.12"

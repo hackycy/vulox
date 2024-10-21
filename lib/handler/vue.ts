@@ -9,16 +9,21 @@ import {
 } from '@vue/compiler-sfc'
 import hashId from 'hash-sum'
 import type { LoaderOptions, ModuleExport, Preset } from '../types'
-import { isJSXLang, isTSLang } from '../utils'
+import { isFunction, isJSXLang, isTSLang } from '../utils'
 
-export async function loadVueModule(source: string, filename: string, options: LoaderOptions): Promise<ModuleExport | null | undefined> {
+export async function handleVueModule(
+  _type: string,
+  source: string,
+  filename: string,
+  options: LoaderOptions
+): Promise<ModuleExport | null | undefined> {
   const component: { [key: string]: any } = {}
 
   const { descriptor } = parse(source, {
     filename
   })
 
-  const { moduleProvider, cjsProcessor, onResourceLoad, onStyleLoad, vueCompilerOptions } = options
+  const { moduleProvider, cjsPreprocessor, getResource, appendStyles, vueCompilerOptions } = options
 
   const id = hashId(filename)
   const scopeId = `data-v-${id}`
@@ -60,7 +65,7 @@ export async function loadVueModule(source: string, filename: string, options: L
   if (descriptor.script || descriptor.scriptSetup) {
     // <script setup> cannot be used with the src attribute.
     if (descriptor.script?.src) {
-      descriptor.script.content = await (await onResourceLoad(descriptor.script.src)).content()
+      descriptor.script.content = await (await getResource(descriptor.script.src)).content()
     }
 
     const scriptBlock = compileScript(descriptor, {
@@ -77,7 +82,7 @@ export async function loadVueModule(source: string, filename: string, options: L
     Object.assign(
       component,
       (
-        (await cjsProcessor(scriptBlock.content, filename, options, [
+        (await cjsPreprocessor(scriptBlock.content, filename, options, [
           ...(isTs ? ['typescript'] : []),
           ...(isJsx ? ['jsx'] : [])
         ] as Preset[]))! as any
@@ -88,11 +93,11 @@ export async function loadVueModule(source: string, filename: string, options: L
   // process <template>
   if (descriptor.template) {
     if (descriptor.template?.src) {
-      descriptor.template.content = await (await onResourceLoad(descriptor.template.src)).content()
+      descriptor.template.content = await (await getResource(descriptor.template.src)).content()
     }
 
     const template = compileTemplate(compileTemplateOptions!)
-    Object.assign(component, await cjsProcessor(template.code, filename, options))
+    Object.assign(component, await cjsPreprocessor(template.code, filename, options))
   }
 
   // process <style>
@@ -101,7 +106,7 @@ export async function loadVueModule(source: string, filename: string, options: L
       throw new Error('<style module> are not supported yet.')
     }
 
-    const raw = style.src ? await (await onResourceLoad(style.src)).content() : style.content
+    const raw = style.src ? await (await getResource(style.src)).content() : style.content
 
     const styleResult = await compileStyleAsync({
       source: raw,
@@ -118,8 +123,8 @@ export async function loadVueModule(source: string, filename: string, options: L
       throw styleResult.errors[0]
     }
 
-    if (onStyleLoad) {
-      onStyleLoad(scopeId, styleResult.code)
+    if (appendStyles && isFunction(appendStyles)) {
+      appendStyles(scopeId, styleResult.code)
     }
   }
 

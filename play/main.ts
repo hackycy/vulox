@@ -1,7 +1,7 @@
 import * as vue from 'vue'
 import type { Resource } from '../lib/types'
-import { babelCJSProcessor } from '../lib/processor/babel'
-import { sucraseCJSProcessor } from '../lib/processor/sucrase'
+import { babelCJSPreprocessor } from '../lib/processor/babel'
+import { sucraseCJSPreprocessor } from '../lib/processor/sucrase'
 import { load } from '../lib/'
 import { PLAY_CODE_CASE1, PLAY_CODE_CASE2, PLAY_CODE_CASE3, PLAY_CODE_CASE4 } from './sfc-case'
 
@@ -22,7 +22,7 @@ async function bootstrap() {
       moduleProvider: {
         vue
       },
-      onStyleLoad(id: string, style: string) {
+      appendStyles(id: string, style: string) {
         let styleEl: HTMLStyleElement | null = document.querySelector(`style[scope="${id}"]`)
 
         if (!styleEl) {
@@ -45,11 +45,11 @@ async function bootstrap() {
         .createApp(
           (await load(caseId, {
             ...opt,
-            cjsProcessor: babelCJSProcessor,
-            onResourceLoad: async (): Promise<Resource> => {
+            cjsPreprocessor: babelCJSPreprocessor,
+            getResource: async (): Promise<Resource> => {
               return {
                 type: '.vue',
-                content: async () => code
+                content: code
               }
             }
           }))!
@@ -69,11 +69,11 @@ async function bootstrap() {
         .createApp(
           (await load(caseId, {
             ...opt,
-            cjsProcessor: sucraseCJSProcessor,
-            onResourceLoad: async (): Promise<Resource> => {
+            cjsPreprocessor: sucraseCJSPreprocessor,
+            getResource: async (): Promise<Resource> => {
               return {
                 type: '.vue',
-                content: async () => code
+                content: code
               }
             }
           }))!

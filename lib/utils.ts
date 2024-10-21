@@ -18,7 +18,7 @@ export function createCJSModule(code: string, options: LoaderOptions) {
   const fn = new Function('exports', 'require', 'module', code)
   fn.call(module.exports, module.exports, require, module)
 
-  return interopRequireDefault(module.exports)
+  return module.exports
 }
 
 export function interopRequireDefault(obj: any): any {

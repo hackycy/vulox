@@ -13,7 +13,7 @@ import { createCJSModule } from '../utils'
 
 export const __IMPORT_FUNCTION__ = '__vulox_dyn_import__'
 
-export async function babelCJSProcessor(
+export async function babelCJSPreprocessor(
   source: string,
   filename: string,
   options: LoaderOptions,

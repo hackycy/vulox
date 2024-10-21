@@ -2,7 +2,7 @@ import { type Transform, transform } from 'sucrase'
 import type { LoaderOptions, ModuleExport, Preset } from '../types'
 import { createCJSModule } from '../utils'
 
-export async function sucraseCJSProcessor(
+export async function sucraseCJSPreprocessor(
   source: string,
   filename: string,
   options: LoaderOptions,

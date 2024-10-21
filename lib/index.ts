@@ -1,11 +1,13 @@
-import { loadVueModule } from './loader/vue'
+import { handleVueModule } from './handler/vue'
+import { handleStandardModule } from './handler/standard'
+import { handleCSSModule } from './handler/css'
 import type { LoaderOptions, ModuleExport, ModuleExportFn } from './types'
 import { isFunction } from './utils'
 
 export * from './types'
 
 export async function load(path: string, options: LoaderOptions): Promise<ModuleExport> {
-  const { moduleProvider, onResourceLoad, onModuleLoad } = options
+  const { moduleProvider, getResource, customModuleProvider } = options
 
   // moduleProvider should be defined with Object.create(null)
   if (moduleProvider instanceof Object) {
@@ -21,25 +23,30 @@ export async function load(path: string, options: LoaderOptions): Promise<Module
   }
 
   const loader: ModuleExportFn = async () => {
-    let module: ModuleExport | null | undefined
+    let module: ModuleExport | undefined
 
-    const { content, type } = await onResourceLoad(path)
-    if (onModuleLoad && isFunction(onModuleLoad)) {
-      module = await onModuleLoad(type, content, path, options)
+    const { content, type } = await getResource(path)
+    if (customModuleProvider && isFunction(customModuleProvider)) {
+      module = await customModuleProvider(type, content, path, options)
     }
 
     // internal module handle
     if (module === undefined) {
       switch (type) {
         case '.json':
-          module = JSON.parse(await content())
+          module = JSON.parse(content)
           break
         case '.vue':
-          module = await loadVueModule(await content(), path, options)
+          module = await handleVueModule(type, content, path, options)
           break
         case '.js':
         case '.ts':
-          // TODO
+        case '.jsx':
+        case '.tsx':
+          module = await handleStandardModule(type, content, path, options)
+          break
+        case '.css':
+          module = await handleCSSModule(type, content, path, options)
           break
       }
     }

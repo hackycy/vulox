@@ -12,10 +12,10 @@ export interface Module {
 
 export interface Resource {
   type: string
-  content: () => Promise<any>
+  content: any
 }
 
-export type Processor = (source: string, filename: string, options: LoaderOptions, presets?: Preset[]) => Promise<ModuleExport>
+export type Preprocessor = (source: string, filename: string, options: LoaderOptions, presets?: Preset[]) => Promise<ModuleExport>
 
 export interface VueCompilerOptions {
   delimiters?: [string, string]
@@ -25,11 +25,11 @@ export interface VueCompilerOptions {
 
 export interface LoaderOptions {
   moduleProvider: Record<ModuleId, ModuleExport | ModuleExportFn>
-  cjsProcessor: Processor
+  cjsPreprocessor: Preprocessor
   vueCompilerOptions?: VueCompilerOptions
-  onResourceLoad: (path: string) => Promise<Resource>
-  onStyleLoad: (id: string, style: string) => void
-  onModuleLoad?: (
+  getResource: (path: string) => Promise<Resource>
+  appendStyles?: (id: string, style: string) => void
+  customModuleProvider?: (
     type: string,
     content: Resource['content'],
     path: string,

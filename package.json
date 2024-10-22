@@ -4,6 +4,11 @@
   "version": "0.0.1",
   "exports": {
     ".": {
+      "types": "./dist/core/vulox.d.ts",
+      "import": "./dist/core/vulox.js",
+      "require": "./dist/core/vulox.umd.cjs"
+    },
+    "./babel": {
       "types": "./dist/babel/vulox.d.ts",
       "import": "./dist/babel/vulox.js",
       "require": "./dist/babel/vulox.umd.cjs"
@@ -14,9 +19,9 @@
       "require": "./dist/sucrase/vulox.umd.cjs"
     }
   },
-  "main": "./dist/babel/vulox.umd.cjs",
-  "module": "./dist/babel/vulox.js",
-  "types": "./dist/babel/vulox.d.ts",
+  "main": "./dist/core/vulox.umd.cjs",
+  "module": "./dist/core/vulox.js",
+  "types": "./dist/core/vulox.d.ts",
   "files": [
     "dist"
   ],

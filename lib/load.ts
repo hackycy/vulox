@@ -51,6 +51,7 @@ export async function load(path: string, options: LoaderOptions): Promise<Module
       }
     }
 
+    // undefined will be unhandleable type
     if (module === undefined) {
       throw new TypeError(`Unable to load ${type} files in ${path}`)
     }

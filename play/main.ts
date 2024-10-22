@@ -2,7 +2,7 @@ import * as vue from 'vue'
 import type { Resource } from '../lib/types'
 import { babelCJSPreprocessor } from '../lib/processor/babel'
 import { sucraseCJSPreprocessor } from '../lib/processor/sucrase'
-import { load } from '../lib/'
+import { load } from '../lib/load'
 import { PLAY_CODE_CASE1, PLAY_CODE_CASE2, PLAY_CODE_CASE3, PLAY_CODE_CASE4 } from './sfc-case'
 
 function createDom() {

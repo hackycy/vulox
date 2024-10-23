@@ -1,8 +1,8 @@
 import * as vue from 'vue'
-import type { Resource } from '../lib/types'
+import type { Resource } from '../lib/util/types'
 import { babelCJSPreprocessor } from '../lib/processor/babel'
 import { sucraseCJSPreprocessor } from '../lib/processor/sucrase'
-import { load } from '../lib/load'
+import { load } from '../lib/vulox'
 import { PLAY_CODE_CASE1, PLAY_CODE_CASE2, PLAY_CODE_CASE3, PLAY_CODE_CASE4 } from './sfc-case'
 
 function createDom() {
@@ -19,7 +19,7 @@ async function bootstrap() {
   // testcase function define
   async function testSfcCase(code: string, caseId: string) {
     const opt = {
-      moduleProvider: {
+      moduleCache: {
         vue
       },
       appendStyles(id: string, style: string) {

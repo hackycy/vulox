@@ -1,11 +1,11 @@
 import type { LoaderOptions } from './types'
 
 export function createCJSModule(code: string, options: LoaderOptions) {
-  const { moduleProvider } = options
+  const { moduleCache } = options
 
   const require = function (id: string) {
-    if (id in moduleProvider) {
-      return moduleProvider[id]
+    if (id in moduleCache) {
+      return moduleCache[id]
     }
 
     throw new Error(`Require module ${id} not found.`)

@@ -1,5 +1,5 @@
 import hashId from 'hash-sum'
-import type { LoaderOptions } from '../types'
+import type { LoaderOptions } from '../util/types'
 
 export async function handleCSSModule(_type: string, source: string, filename: string, options: LoaderOptions) {
   const styleId = hashId(filename)

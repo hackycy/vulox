@@ -1,5 +1,8 @@
-import { type NodePath, type PluginItem, types as t, transformFromAstAsync, traverse } from '@babel/core'
+import { type PluginItem, transformFromAstAsync } from '@babel/core'
 import { parse } from '@babel/parser'
+// eslint-disable-next-line ts/ban-ts-comment
+// @ts-ignore
+import babelPluginTransformDynamicImport from '@babel/plugin-transform-dynamic-import'
 // eslint-disable-next-line ts/ban-ts-comment
 // @ts-ignore
 import babelPluginTransformModulesCommonjs from '@babel/plugin-transform-modules-commonjs'
@@ -8,10 +11,8 @@ import babelPluginTransformModulesCommonjs from '@babel/plugin-transform-modules
 import babelPluginTransformTypescript from '@babel/plugin-transform-typescript'
 import babelPluginVueJsx from '@vue/babel-plugin-jsx'
 
-import type { LoaderOptions, ModuleExport, Preset } from '../types'
-import { createCJSModule } from '../utils'
-
-export const __IMPORT_FUNCTION__ = '__vulox_dyn_import__'
+import type { LoaderOptions, ModuleExport, Preset } from '../util/types'
+import { createCJSModule } from '../util/utils'
 
 export async function babelCJSPreprocessor(
   source: string,
@@ -25,12 +26,11 @@ export async function babelCJSPreprocessor(
     plugins: presets
   })
 
-  renameDynamicImport(ast)
-
   const transformed = await transformFromAstAsync(ast, source, {
     sourceMaps: false,
     filename,
     plugins: [
+      babelPluginTransformDynamicImport,
       babelPluginTransformModulesCommonjs,
       ...(presets && presets.includes('typescript') ? [babelPluginTransformTypescript] : []),
       ...(presets && presets.includes('jsx') ? [babelPluginVueJsx] : [])
@@ -46,17 +46,4 @@ export async function babelCJSPreprocessor(
   })
 
   return createCJSModule(transformed!.code!, options)
-}
-
-/**
- * @private
- */
-function renameDynamicImport(ast: t.File): void {
-  traverse(ast, {
-    CallExpression(path: NodePath<t.CallExpression>) {
-      if (t.isImport(path.node.callee)) {
-        path.replaceWith(t.callExpression(t.identifier(__IMPORT_FUNCTION__), path.node.arguments))
-      }
-    }
-  })
 }

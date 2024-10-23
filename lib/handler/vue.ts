@@ -8,8 +8,8 @@ import {
   parse
 } from '@vue/compiler-sfc'
 import hashId from 'hash-sum'
-import type { LoaderOptions, ModuleExport, Preset } from '../types'
-import { isFunction, isJSXLang, isTSLang } from '../utils'
+import type { LoaderOptions, ModuleExport, Preset } from '../util/types'
+import { isFunction, isJSXLang, isTSLang } from '../util/utils'
 
 export async function handleVueModule(
   _type: string,
@@ -23,7 +23,7 @@ export async function handleVueModule(
     filename
   })
 
-  const { moduleProvider, cjsPreprocessor, getResource, appendStyles, vueCompilerOptions } = options
+  const { moduleCache, cjsPreprocessor, getResource, appendStyles, vueCompilerOptions } = options
 
   const id = hashId(filename)
   const scopeId = `data-v-${id}`
@@ -57,7 +57,7 @@ export async function handleVueModule(
           expressionPlugins: [...(isTs ? ['typescript'] : []), ...(isJsx ? ['jsx'] : [])] as CompilerOptions['expressionPlugins']
         },
         preprocessLang: descriptor.template.lang,
-        preprocessCustomRequire: (id) => moduleProvider[id]
+        preprocessCustomRequire: (id) => moduleCache[id]
       }
     : undefined
 
@@ -116,7 +116,7 @@ export async function handleVueModule(
       modules: !!style.module,
       trim: true,
       preprocessLang: style.lang as SFCAsyncStyleCompileOptions['preprocessLang'],
-      preprocessCustomRequire: (id) => moduleProvider[id]
+      preprocessCustomRequire: (id) => moduleCache[id]
     })
 
     if (styleResult.errors.length > 0) {
@@ -126,6 +126,14 @@ export async function handleVueModule(
     if (appendStyles && isFunction(appendStyles)) {
       appendStyles(scopeId, styleResult.code)
     }
+  }
+
+  if (descriptor.customBlocks?.length > 0 && vueCompilerOptions?.compileCustomBlock && isFunction(vueCompilerOptions.compileCustomBlock)) {
+    await Promise.all(
+      descriptor.customBlocks.map(async (block) => {
+        await vueCompilerOptions.compileCustomBlock(block, filename, options, component)
+      })
+    )
   }
 
   return component

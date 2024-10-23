@@ -8,15 +8,15 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const libMap = [
   {
-    entry: resolve(__dirname, '../lib/vulox-core.ts'),
+    entry: resolve(__dirname, '../lib/vulox.ts'),
     name: 'core'
   },
   {
-    entry: resolve(__dirname, '../lib/vulox-babel.ts'),
+    entry: resolve(__dirname, '../lib/vulox.babel.ts'),
     name: 'babel'
   },
   {
-    entry: resolve(__dirname, '../lib/vulox-sucrase.ts'),
+    entry: resolve(__dirname, '../lib/vulox.sucrase.ts'),
     name: 'sucrase'
   }
 ]

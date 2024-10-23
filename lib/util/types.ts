@@ -15,21 +15,30 @@ export interface Resource {
   content: any
 }
 
+export interface CustomBlock {
+  type: string
+  content: string
+  attrs: Record<string, string | true>
+  lang?: string
+  src?: string
+}
+
 export type Preprocessor = (source: string, filename: string, options: LoaderOptions, presets?: Preset[]) => Promise<ModuleExport>
 
 export interface VueCompilerOptions {
   delimiters?: [string, string]
   whitespace?: 'preserve' | 'condense'
   isCustomElement: ((tag: string) => boolean) | undefined
+  compileCustomBlock: (block: CustomBlock, filename: string, options: LoaderOptions, component: object) => Promise<void>
 }
 
 export interface LoaderOptions {
-  moduleProvider: Record<ModuleId, ModuleExport | ModuleExportFn>
+  moduleCache: Record<ModuleId, ModuleExport | ModuleExportFn>
   cjsPreprocessor: Preprocessor
   vueCompilerOptions?: VueCompilerOptions
   getResource: (path: string) => Promise<Resource>
   appendStyles?: (id: string, style: string) => void
-  customModuleProvider?: (
+  customModuleHandler?: (
     type: string,
     content: Resource['content'],
     path: string,

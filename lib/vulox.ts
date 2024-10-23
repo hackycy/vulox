@@ -1,24 +1,24 @@
 import { handleVueModule } from './handler/vue'
 import { handleStandardModule } from './handler/standard'
 import { handleCSSModule } from './handler/css'
-import type { LoaderOptions, ModuleExport, ModuleExportFn } from './types'
-import { isFunction } from './utils'
+import type { LoaderOptions, ModuleExport, ModuleExportFn } from './util/types'
+import { isFunction } from './util/utils'
 
-export * from './types'
+export * from './util/types'
 
 export async function load(path: string, options: LoaderOptions): Promise<ModuleExport> {
-  const { moduleProvider, getResource, customModuleProvider } = options
+  const { moduleCache, getResource, customModuleHandler } = options
 
   // moduleProvider should be defined with Object.create(null)
-  if (moduleProvider instanceof Object) {
-    Object.setPrototypeOf(moduleProvider, null)
+  if (moduleCache instanceof Object) {
+    Object.setPrototypeOf(moduleCache, null)
   }
 
-  if (path in moduleProvider) {
-    if (isFunction(moduleProvider[path])) {
-      return await moduleProvider[path](path, options)
+  if (path in moduleCache) {
+    if (isFunction(moduleCache[path])) {
+      return await moduleCache[path](path, options)
     } else {
-      return moduleProvider[path]
+      return moduleCache[path]
     }
   }
 
@@ -26,8 +26,8 @@ export async function load(path: string, options: LoaderOptions): Promise<Module
     let module: ModuleExport | undefined
 
     const { content, type } = await getResource(path)
-    if (customModuleProvider && isFunction(customModuleProvider)) {
-      module = await customModuleProvider(type, content, path, options)
+    if (customModuleHandler && isFunction(customModuleHandler)) {
+      module = await customModuleHandler(type, content, path, options)
     }
 
     // internal module handle
@@ -56,7 +56,7 @@ export async function load(path: string, options: LoaderOptions): Promise<Module
       throw new TypeError(`Unable to load ${type} files in ${path}`)
     }
 
-    return (moduleProvider[path] = module!)
+    return (moduleCache[path] = module!)
   }
 
   return (await loader(path, options))!

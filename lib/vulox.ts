@@ -31,7 +31,7 @@ export async function load(path: string, options: LoaderOptions): Promise<Module
     }
 
     // internal module handle
-    if (module === undefined) {
+    if (module === void 0) {
       switch (type) {
         case '.json':
           module = JSON.parse(content)
@@ -52,7 +52,7 @@ export async function load(path: string, options: LoaderOptions): Promise<Module
     }
 
     // undefined will be unhandleable type
-    if (module === undefined) {
+    if (module === void 0) {
       throw new TypeError(`Unable to load ${type} files in ${path}`)
     }
 

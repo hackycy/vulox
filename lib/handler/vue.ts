@@ -50,7 +50,7 @@ export async function handleVueModule(
         source: descriptor.template.content,
         compilerOptions: {
           mode: 'module',
-          scopeId: hasScoped ? scopeId : undefined,
+          scopeId: hasScoped ? scopeId : void 0,
           delimiters: vueCompilerOptions?.delimiters,
           whitespace: vueCompilerOptions?.whitespace,
           isCustomElement: vueCompilerOptions?.isCustomElement,
@@ -59,7 +59,7 @@ export async function handleVueModule(
         preprocessLang: descriptor.template.lang,
         preprocessCustomRequire: (id) => moduleCache[id]
       }
-    : undefined
+    : void 0
 
   // process <script> and <script setup>
   if (descriptor.script || descriptor.scriptSetup) {

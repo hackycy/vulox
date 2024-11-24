@@ -11,30 +11,24 @@ import babelPluginTransformModulesCommonjs from '@babel/plugin-transform-modules
 import babelPluginTransformTypescript from '@babel/plugin-transform-typescript'
 import babelPluginVueJsx from '@vue/babel-plugin-jsx'
 
-import type { LoaderOptions, ModuleExport, Preset } from '../util/types'
-import { createCJSModule } from '../util/utils'
+import type { Code, TransformOptions } from '../util/types'
 
-export async function babelCJSPreprocessor(
-  source: string,
-  filename: string,
-  options: LoaderOptions,
-  presets?: Preset[]
-): Promise<ModuleExport> {
+export async function transform(source: string, opt: TransformOptions): Promise<Code> {
   const ast = parse(source, {
     sourceType: 'module',
-    sourceFilename: filename,
-    plugins: presets
+    sourceFilename: opt.filename,
+    plugins: opt.presets
   })
 
   const transformed = await transformFromAstAsync(ast, source, {
-    sourceMaps: false,
-    filename,
+    filename: opt.filename,
     plugins: [
       babelPluginTransformDynamicImport,
       babelPluginTransformModulesCommonjs,
-      ...(presets && presets.includes('typescript') ? [babelPluginTransformTypescript] : []),
-      ...(presets && presets.includes('jsx') ? [babelPluginVueJsx] : [])
+      ...(opt.presets && opt.presets.includes('typescript') ? [babelPluginTransformTypescript] : []),
+      ...(opt.presets && opt.presets.includes('jsx') ? [babelPluginVueJsx] : [])
     ] as PluginItem[],
+    sourceMaps: false,
     babelrc: false,
     configFile: false,
     highlightCode: false,
@@ -45,5 +39,5 @@ export async function babelCJSPreprocessor(
     sourceType: 'module'
   })
 
-  return createCJSModule(transformed!.code!, options)
+  return transformed?.code
 }

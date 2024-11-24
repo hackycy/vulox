@@ -45,3 +45,16 @@ export interface LoaderOptions {
     options: LoaderOptions
   ) => Promise<ModuleExport | null | undefined>
 }
+
+export interface TransformOptions {
+  filename?: string
+  presets?: Preset[]
+}
+
+export type Transformer = (source: string, options: TransformOptions) => Promise<Code>
+
+export type Code = string | undefined | null
+
+export interface VOptions {
+  imports: Record<string, ModuleExport>
+}

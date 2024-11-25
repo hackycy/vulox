@@ -56,5 +56,7 @@ export type Transformer = (source: string, options: TransformOptions) => Promise
 export type Code = string | undefined | null
 
 export interface VOptions {
+  entry: string
   imports: Record<string, ModuleExport>
+  getFiles: Record<string, string | ((path: string) => string)>
 }

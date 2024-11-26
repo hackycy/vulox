@@ -9,7 +9,7 @@ import {
 } from '@vue/compiler-sfc'
 import hashId from 'hash-sum'
 import type { LoaderOptions, ModuleExport, Preset } from '../util/types'
-import { isFunction, isJSXLang, isTSLang } from '../util/utils'
+import { isFunction, isJSXLang, isTSLang } from '../util/is'
 
 export async function handleVueModule(
   _type: string,

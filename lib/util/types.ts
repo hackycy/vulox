@@ -51,12 +51,13 @@ export interface TransformOptions {
   presets?: Preset[]
 }
 
-export type Transformer = (source: string, options: TransformOptions) => Promise<Code>
-
 export type Code = string | undefined | null
+
+export type Transform = (source: string, options: TransformOptions) => Promise<Code>
 
 export interface VOptions {
   entry: string
   importMap: Record<string, ModuleExport>
-  getFiles: Record<string, string> | ((path: ModuleId) => string | Promise<string>)
+  transform: Transform
+  getFiles: (path: string) => string | Promise<string>
 }

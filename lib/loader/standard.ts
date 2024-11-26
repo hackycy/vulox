@@ -1,5 +1,5 @@
 import type { LoaderOptions, Preset } from '../util/types'
-import { isJSXLang, isTSLang } from '../util/utils'
+import { isJSXLang, isTSLang } from '../util/is'
 
 export async function handleStandardModule(type: string, source: string, filename: string, options: LoaderOptions) {
   const { cjsPreprocessor } = options

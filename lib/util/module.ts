@@ -24,14 +24,3 @@ export function createCJSModule(code: string, options: LoaderOptions) {
 export function interopRequireDefault(obj: any): any {
   return obj && obj.__esModule ? obj : { default: obj }
 }
-
-export function isTSLang(lang: string | null | undefined) {
-  return !!(lang && /(?:\.|\b)tsx?$/.test(lang))
-}
-
-export function isJSXLang(lang: string | null | undefined) {
-  return !!(lang && /(?:\.|\b)[jt]sx$/.test(lang))
-}
-
-// eslint-disable-next-line ts/no-unsafe-function-type
-export const isFunction = (val: unknown): val is Function => typeof val === 'function'

@@ -3,31 +3,19 @@
   "type": "module",
   "version": "0.0.1",
   "exports": {
-    ".": {
-      "types": "./dist/core/vulox.d.ts",
-      "import": "./dist/core/vulox.js",
-      "require": "./dist/core/vulox.umd.cjs"
-    },
-    "./babel": {
-      "types": "./dist/babel/vulox.d.ts",
-      "import": "./dist/babel/vulox.js",
-      "require": "./dist/babel/vulox.umd.cjs"
-    },
-    "./sucrase": {
-      "types": "./dist/sucrase/vulox.d.ts",
-      "import": "./dist/sucrase/vulox.js",
-      "require": "./dist/sucrase/vulox.umd.cjs"
-    }
+    "types": "./dist/vulox.d.ts",
+    "import": "./dist/vulox.js",
+    "require": "./dist/vulox.umd.cjs"
   },
-  "main": "./dist/core/vulox.umd.cjs",
-  "module": "./dist/core/vulox.js",
-  "types": "./dist/core/vulox.d.ts",
+  "main": "./dist/vulox.umd.cjs",
+  "module": "./dist/vulox.js",
+  "types": "./dist/vulox.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && node scripts/build.js"
+    "build": "tsc && vite build"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.27.3",
@@ -43,7 +31,6 @@
     "@vue/compiler-sfc": "^3.5.13",
     "eslint": "^9.15.0",
     "hash-sum": "^2.0.0",
-    "sucrase": "^3.35.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
     "vite-plugin-dts": "^4.3.0",

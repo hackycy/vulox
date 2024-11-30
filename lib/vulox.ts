@@ -1,6 +1,6 @@
-import type { ModuleExport, VOptions } from './util/types'
+import type { ModuleExport, VOptions } from './types'
 
-export * from './util/types'
+export * from './types'
 
 export async function load(options: VOptions): Promise<ModuleExport> {
   const { entry, getFiles } = options

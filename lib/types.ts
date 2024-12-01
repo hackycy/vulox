@@ -1,5 +1,7 @@
 export type Preset = 'typescript' | 'jsx'
 
+export type Rule = string | RegExp
+
 export type ModuleId = string
 
 export type ModuleExport = object | null
@@ -13,10 +15,15 @@ export interface TransformOptions {
   presets?: Preset[]
 }
 
-export type Code = string | undefined | null
+export interface PathContext {
+  /** reference path */
+  refPath?: string
+  /** relative to @refPath */
+  relPath: string
+}
 
 export interface VOptions {
   entry: string
-  importMap: Record<string, ModuleExport>
-  getFiles: (path: string) => string | Promise<string>
+  modules: Record<string, ModuleExport>
+  getFile: (pathCtx: PathContext) => string | Promise<string>
 }

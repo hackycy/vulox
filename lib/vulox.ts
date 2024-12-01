@@ -3,13 +3,12 @@ import type { ModuleExport, VOptions } from './types'
 export * from './types'
 
 export async function load(options: VOptions): Promise<ModuleExport> {
-  const { entry, getFiles } = options
+  const { getFile, entry } = options
 
-  const entryFile = await getFiles(entry)
+  const entryContent = await getFile({ relPath: entry })
 
-  if (entryFile) {
-    // TODO
-  }
+  // eslint-disable-next-line no-console
+  console.log(entryContent)
 
   return null
 }

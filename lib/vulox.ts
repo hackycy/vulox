@@ -1,14 +1,10 @@
-import type { ModuleExport, VOptions } from './types'
+import type { VOptions } from './types'
 
 export * from './types'
 
-export async function load(options: VOptions): Promise<ModuleExport> {
-  const { getFile, entry } = options
-
-  const entryContent = await getFile({ relPath: entry })
-
+export async function load<T = unknown>(options: VOptions): Promise<T> {
   // eslint-disable-next-line no-console
-  console.log(entryContent)
+  console.log(options)
 
-  return null
+  return null as T
 }

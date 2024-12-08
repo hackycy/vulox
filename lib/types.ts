@@ -1,29 +1,13 @@
-export type Preset = 'typescript' | 'jsx'
+export type Result = string | null
 
-export type Rule = string | RegExp
-
-export type ModuleId = string
-
-export type ModuleExport = object | null
-
-export interface Module {
-  exports: ModuleExport
-}
-
-export interface TransformOptions {
-  filename?: string
-  presets?: Preset[]
-}
-
-export interface PathContext {
-  /** reference path */
-  refPath?: string
-  /** relative to @refPath */
-  relPath: string
+export interface Plugin {
+  name: string
+  resolveId?: (id: string) => Result
+  load?: (id: string) => Result | Promise<Result>
 }
 
 export interface VOptions {
   entry: string
-  modules: Record<string, ModuleExport>
-  getFile: (pathCtx: PathContext) => string | Promise<string>
+  moduleCache: Record<string, any>
+  getFile: (id: string) => string | Promise<string>
 }

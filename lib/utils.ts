@@ -20,3 +20,7 @@ export function interopRequireDefault(obj: any): any {
 export function hashId(value: any) {
   return hashsum(value)
 }
+
+export function isString(value: any): value is string {
+  return typeof value === 'string'
+}

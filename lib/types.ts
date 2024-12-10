@@ -18,4 +18,5 @@ export interface VOptions {
   moduleCache: Record<string, any>
   plugins?: Plugin[]
   readFile: (id: string) => string | Promise<string>
+  pathResolve?: (source: string, importer?: string) => string
 }

@@ -1,5 +1,4 @@
 import type { Module, Plugin, Result, VOptions } from './types'
-import { isString } from './utils'
 
 export class ModuleLoader {
   private modules: Map<string, Module> = new Map()
@@ -33,8 +32,8 @@ export class ModuleLoader {
 
     // 2. 加载模块内容
     const code = await this.loadModuleContent(resolvedId)
-    if (!isString(code)) {
-      throw new Error(`Failed to load module: ${resolvedId}`)
+    if (typeof code !== 'string') {
+      throw new TypeError(`Failed to load module: ${resolvedId}`)
     }
 
     // 3. 转换模块代码
@@ -124,58 +123,5 @@ export class ModuleLoader {
     }
 
     return dependencies
-  }
-}
-
-// 使用示例
-export async function example() {
-  // 创建插件
-  const testPlugin: Plugin = {
-    name: 'test-plugin',
-    resolveId: (source) => {
-      // 简单的路径解析
-      if (source.startsWith('./')) {
-        return source.slice(2)
-      }
-      return source
-    },
-    transform: async (code) => {
-      // 简单的代码转换
-      return code.replace('//# sourceMappingURL', '')
-    }
-  }
-
-  // 创建加载器实例
-  const loader = new ModuleLoader({
-    entry: 'index.js',
-    plugins: [testPlugin],
-    moduleCache: {},
-    readFile: async (id) => {
-      // 模拟文件读取
-      const files: Record<string, string> = {
-        'index.js': `
-            import { helper } from './helper';
-            import { utils } from './utils';
-            console.log(helper, utils);
-          `,
-        'helper.js': `
-            import { utils } from './utils';
-            export const helper = { utils };
-          `,
-        'utils.js': `
-            export const utils = {};
-          `
-      }
-      return files[id] || ''
-    }
-  })
-
-  try {
-    // 从入口文件开始查找所有模块
-    const modules = await loader.findAllModules('index.js')
-    // eslint-disable-next-line no-console
-    console.log('Found modules:', Array.from(modules.keys()))
-  } catch (error) {
-    console.error('Error:', error)
   }
 }
